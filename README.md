@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+### O que esperamos?
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Estruturar
+- Estilizar
+- Conectar
+- Manipular dados
 
-## Available Scripts
+### Sobre o desafio
 
-In the project directory, you can run:
+- O Objetivo será implementar um Webapp de listagem e pré-visualização de músicas.
+- usar essa api -> https://developers.deezer.com/api/explorer?url=chart
 
-### `npm start`
+- O projeto deverá ser entregue em forma de repositório público com as instruções de instalação e execução.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Requisitos
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Bibliotecas e patterns Indispensáveis;
+- ReactJs ou ReactNative for web;
+- Redux;
+- Axios;
+- Styled Components;
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    ## Organização do Webapp:
 
-### `npm run build`
+    # 1º View:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Deverá apresentar a lista das principais músicas do momento listadas na Deezer;
+    Também deve existir um campo de pesquisa por texto onde podemos pesquisar por álbum, artista, ou título musical;
+    Quando realizar alguma pesquisa, a listagem inicial deve ser substituída pela listagem referente a pesquisa. (Usar o mesmo componente de listagem)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ## Os itens da lista devem apresentar:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Os dados da música como (capa do álbum, título, cantor, duração);
+    Um botão para acessar a musica completa no Deezer;
+    Um botão de play/pause para escutar a prévia da música;
+    Um botão para adicionar a música na lista de músicas favoritas;
 
-### `npm run eject`
+    # 2º View:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    Será apresentada a lista com as músicas escolhidas pelo usuário na tela principal. A listagem deve ser semelhante a da tela inicial, porém deve mostrar o botão para remover da lista de favoritos.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Orientações:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Fique a vontade para escolher utilizar Hooks ou classes, mas não misture-os.
+Use e Abuse do Redux! Precisamos saber o seu nível de familiaridade com ele.
+A listagem de músicas favoritas deve estar contida em uma store do Redux, porém se quiser implementar algo para salvar no navegador a lista, seria bem legal, mas não é obrigatório.
+A listagem de músicas vindas da API devem ser feitas através de paginação, fique a vontade para fazer como achar melhor, porém, um infinity scroll daria aquele toque a mais, fica a dica!
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### ENTREGA DIA 24/08/21
