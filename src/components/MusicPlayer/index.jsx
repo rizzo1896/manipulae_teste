@@ -1,5 +1,6 @@
+import { red } from "@material-ui/core/colors";
 import React, { useState, useEffect } from "react";
-
+import ReactAudioPlayer from "react-audio-player";
 import { PlayerStyle } from "./style.jsx";
 
 const PlayerAudio = (props) => {
@@ -23,23 +24,19 @@ const PlayerAudio = (props) => {
   return (
     <>
       {/* <PlayerStyle controls="controls" autoPlay src={musicLink} /> */}
-
-      <button onClick={music}>click</button>
-      <button
-        onClick={() => {
-          music()
-          audioElement.play();
+      <ReactAudioPlayer
+        style={{
+          minWidth: "inherit",
+          maxWidth: "inherit",
+          position: "fixed",
+          bottom: "0",
         }}
-      >
-        play
-      </button>
-      <button
-        onClick={() => {
-          audioElement.pause();
-        }}
-      >
-        pause
-      </button>
+        volume={0.3}
+        autoPlay
+        controls
+        src={musicLink}
+        // onPause={}
+      />
     </>
   );
 };

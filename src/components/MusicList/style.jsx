@@ -1,5 +1,34 @@
 import styled from "styled-components";
 
+export const InfoBox = styled.div`
+  width: 900px;
+  margin: 0 auto;
+  margin-bottom: 80px;
+  .content {
+    display: flex;
+    img {
+      width: 200px;
+      height: 200px;
+    }
+    .Info--desc {
+      padding-left: 30px;
+      h1 {
+        font-size: 32px;
+        font-family: Deezer, Arial, sans-serif;
+        font-weight: 700;
+      }
+      div {
+        font-family: Deezer, Arial, sans-serif;
+        font-size: 15px;
+        span {
+          color: #ccc;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+`;
+
 export const ListContainer = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -11,7 +40,7 @@ export const ListContainer = styled.div`
   min-width: 900px;
   max-width: 1600px;
   margin: auto;
-
+  margin-bottom: 55px;
   .headerList {
     color: #72727d;
     min-width: inherit;
@@ -75,6 +104,16 @@ export const ListContainer = styled.div`
     .title--music {
       min-width: 300px;
       max-width: 580px;
+      a,
+      a:visited,
+      a:active {
+        color: #000;
+        text-decoration: none;
+      }
+      a:hover {
+        transition: all ease 0.2s;
+        color: #ca2a36;
+      }
     }
     .title--artist {
       width: 220px;
@@ -86,10 +125,12 @@ export const ListContainer = styled.div`
       width: 50px;
     }
   }
+`;
 
-  .audio--player {
-    width: 100%;
-    background-color: red;
-    border-radius: none;
-  }
+export const PlayerStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  min-width: 900px;
+  max-width: 1600px;
+  margin: auto;
 `;
