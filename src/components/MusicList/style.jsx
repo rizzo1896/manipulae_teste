@@ -93,7 +93,6 @@ export const ListContainer = styled.div`
         }
         svg:hover {
           border-radius: 20px;
-          color: red;
           background-color: #fff;
         }
       }
