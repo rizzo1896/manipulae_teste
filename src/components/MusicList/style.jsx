@@ -94,6 +94,7 @@ export const ListContainer = styled.div`
         svg:hover {
           border-radius: 20px;
           background-color: #fff;
+          color: red;
         }
       }
     }

@@ -193,7 +193,7 @@ const List = () => {
                   >
                     <div
                       className="rank"
-                      onClick={() => setMusicPlayed(trackList[key].preview)}
+                      onClick={() => setMusicPlayed(item.preview)}
                     >
                       {key + 1}
                     </div>
@@ -230,6 +230,7 @@ const List = () => {
               );
             })}
           {/* Lista de Favoritos */}
+          {console.log(favoriteData)}
           {showFavoriteList &&
             favoriteData.map((item, key) => {
               return (
@@ -250,7 +251,7 @@ const List = () => {
                   >
                     <div
                       className="rank"
-                      onClick={() => setMusicPlayed(trackList[key].preview)}
+                      onClick={() => setMusicPlayed(item.data.preview)}
                     >
                       {key + 1}
                     </div>
