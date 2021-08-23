@@ -26,25 +26,12 @@ const List = () => {
   const favoriteList = useSelector(
     (state) => state.FavoriteListReducer.favorites
   );
+  const trackLinks = useSelector(
+    (state) => state.FavoriteListReducer.trackLinks
+  );
   const dispatch = useDispatch();
 
-  // let chart = `https://api.deezer.com/chart/0`;
   let chartPlaylist = `https://api.deezer.com/playlist/1111141961?&limit=${valueList}`;
-  // let chartURL = `https://api.deezer.com/chart/0/tracks?&limit=${valueList}`;
-
-  // useEffect(() => {
-  //   axios.get(chart).then((res) => {
-  //     console.log(res.data, "chart");
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   axios.get(chartURL).then((res) => {
-  //     console.log(res.data, 'musicas');
-  //     setTrackList(res.data.data);
-  //     setLoading(false);
-  //   });
-  // }, [valueList]);
 
   useEffect(() => {
     axios.get(chartPlaylist).then((res) => {
@@ -59,18 +46,18 @@ const List = () => {
   }, [chartPlaylist]);
 
   useEffect(() => {
-    axios.all(favoriteList.map((l) => axios.get(l))).then(
+    axios.all(trackLinks.map((l) => axios.get(l))).then(
       axios.spread(function (...res) {
         // all requests are now complete
         setFavoriteData(res);
       })
     );
-    if (!showTrackList && favoriteList.length === 0) {
+    if (!showTrackList && trackLinks.length === 0) {
       setShowTrackList(true);
       setShowFavoriteList(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [favoriteList]);
+  }, [trackLinks]);
 
   const handleInput = (e) => {
     setSearch(e.target.value);
@@ -93,6 +80,9 @@ const List = () => {
     dispatch({
       type: "ADD_FAV",
       newId: parseInt(e.currentTarget.getAttribute("value")),
+      add_tracks: `https://api.deezer.com/track/${e.currentTarget.getAttribute(
+        "value"
+      )}`,
     });
   };
 
@@ -100,12 +90,18 @@ const List = () => {
     dispatch({
       type: "DELETE_FAV",
       remove: parseInt(e.currentTarget.getAttribute("value")),
+      remove_tracks: `https://api.deezer.com/track/${e.currentTarget.getAttribute(
+        "value"
+      )}`,
     });
   };
 
   // eslint-disable-next-line no-array-constructor
   const handleFav = (e) => {
-    favoriteList.includes(parseInt(e.currentTarget.getAttribute("value")))
+    favoriteList.includes(parseInt(e.currentTarget.getAttribute("value"))) &&
+    trackLinks.includes(
+      `https://api.deezer.com/track/${e.currentTarget.getAttribute("value")}`
+    )
       ? Del_fav(e)
       : Add_fav(e);
   };
@@ -233,7 +229,7 @@ const List = () => {
                 </>
               );
             })}
-
+          {/* Lista de Favoritos */}
           {showFavoriteList &&
             favoriteData.map((item, key) => {
               return (
@@ -259,12 +255,8 @@ const List = () => {
                       {key + 1}
                     </div>
                     <div className="favorite--icon">
-                      <span value={item.id} onClick={(e) => handleFav(e)}>
-                        {favoriteList.includes(item.id) ? (
-                          <FavoriteIcon style={{ color: "red" }} />
-                        ) : (
-                          <FavoriteBorderIcon fontSize={"inherit"} />
-                        )}
+                      <span value={item.data.id} onClick={(e) => handleFav(e)}>
+                        <FavoriteIcon style={{ color: "red" }} />
                       </span>
                     </div>
                     <div className="title--music">
