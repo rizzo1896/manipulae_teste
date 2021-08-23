@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
 import axios from "axios";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ListContainer, PlayerStyle, InfoBox } from "./style.jsx";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -65,6 +65,10 @@ const List = () => {
         setFavoriteData(res);
       })
     );
+    if (!showTrackList && favoriteList.length === 0) {
+      setShowTrackList(true);
+      setShowFavoriteList(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteList]);
 
@@ -88,42 +92,33 @@ const List = () => {
   const Add_fav = (e) => {
     dispatch({
       type: "ADD_FAV",
-      newId: `https://api.deezer.com/track/${e.currentTarget.getAttribute(
-        "value"
-      )}`,
+      newId: parseInt(e.currentTarget.getAttribute("value")),
     });
-    e.currentTarget.firstElementChild.innerHTML = ReactDOMServer.renderToString(
-      favoriteList.includes(e.currentTarget.getAttribute("value")) ? (
-        ""
-      ) : (
-        <FavoriteIcon style={{ color: "red" }} />
-      )
-    );
   };
 
   const Del_fav = (e) => {
     dispatch({
       type: "DELETE_FAV",
-      remove: `https://api.deezer.com/track/${e.currentTarget.getAttribute(
-        "value"
-      )}`,
+      remove: parseInt(e.currentTarget.getAttribute("value")),
     });
-    e.currentTarget.firstElementChild.innerHTML = ReactDOMServer.renderToString(
-      favoriteList.includes(e.currentTarget.getAttribute("value")) ? (
-        ""
-      ) : (
-        <FavoriteBorderIcon fontSize={"inherit"} />
-      )
-    );
   };
 
   // eslint-disable-next-line no-array-constructor
   const handleFav = (e) => {
-    favoriteList.includes(
-      `https://api.deezer.com/track/${e.currentTarget.getAttribute("value")}`
-    )
+    favoriteList.includes(parseInt(e.currentTarget.getAttribute("value")))
       ? Del_fav(e)
       : Add_fav(e);
+  };
+
+  const toggleData = () => {
+    if (showTrackList && favoriteList.length > 0) {
+      setShowTrackList(false);
+      setShowFavoriteList(true);
+    }
+    if (!showTrackList) {
+      setShowTrackList(true);
+      setShowFavoriteList(false);
+    }
   };
 
   if (isLoading) {
@@ -139,32 +134,25 @@ const List = () => {
           }
         }}
       >
-        Adicionar
+        adicionar +20 musicas
       </button>
       <br />
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
 
       <br />
       <br />
       <button
         onClick={() => {
-          if (showTrackList && favoriteList.length > 0) {
-            setShowTrackList(false);
-            setShowFavoriteList(true);
-          }
-          if (!showTrackList) {
-            setShowTrackList(true);
-            setShowFavoriteList(false);
-          }
+          toggleData();
         }}
       >
         Mostrar Favoritos
       </button>
       <InfoBox>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <div className="content">
           <img src={bannerAlbum} alt="" />
           <div className="Info--desc">
@@ -214,11 +202,13 @@ const List = () => {
                       {key + 1}
                     </div>
                     <div className="favorite--icon">
-                      <span
-                        children={<FavoriteBorderIcon fontSize={"inherit"} />}
-                        value={item.id}
-                        onClick={(e) => handleFav(e)}
-                      />
+                      <span value={item.id} onClick={(e) => handleFav(e)}>
+                        {favoriteList.includes(item.id) ? (
+                          <FavoriteIcon style={{ color: "red" }} />
+                        ) : (
+                          <FavoriteBorderIcon fontSize={"inherit"} />
+                        )}
+                      </span>
                     </div>
                     <div className="title--music">
                       <a target="_blank" rel="noreferrer" href={item.link}>
@@ -269,11 +259,13 @@ const List = () => {
                       {key + 1}
                     </div>
                     <div className="favorite--icon">
-                      <span
-                        children={<FavoriteBorderIcon fontSize={"inherit"} />}
-                        value={item.data.id}
-                        onClick={(e) => handleFav(e)}
-                      />
+                      <span value={item.id} onClick={(e) => handleFav(e)}>
+                        {favoriteList.includes(item.id) ? (
+                          <FavoriteIcon style={{ color: "red" }} />
+                        ) : (
+                          <FavoriteBorderIcon fontSize={"inherit"} />
+                        )}
+                      </span>
                     </div>
                     <div className="title--music">
                       <a target="_blank" rel="noreferrer" href={item.data.link}>
