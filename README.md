@@ -1,6 +1,6 @@
 ## Visualização pratica do app
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/hPhl5vva48s/0.jpg)]
-(https://www.youtube.com/watch?v=hPhl5vva48s)
+Video de funcionamento (https://www.youtube.com/watch?v=hPhl5vva48s)
 
 ## Como acessar o webapp
 
