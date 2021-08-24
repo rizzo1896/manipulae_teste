@@ -38,6 +38,27 @@ const List = () => {
   const dispatch = useDispatch();
   let chartPlaylist = `https://api.deezer.com/playlist/1111141961?&index=0&limit=${valueList}`;
 
+  //  handle CORS error using this snippet from https://github.com/Rob--W/cors-anywhere
+  (function () {
+    var cors_api_host = "cors-anywhere.herokuapp.com";
+    var cors_api_url = "https://" + cors_api_host + "/";
+    var slice = [].slice;
+    var origin = window.location.protocol + "//" + window.location.host;
+    var open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function () {
+      var args = slice.call(arguments);
+      var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+      if (
+        targetOrigin &&
+        targetOrigin[0].toLowerCase() !== origin &&
+        targetOrigin[1] !== cors_api_host
+      ) {
+        args[1] = cors_api_url + args[1];
+      }
+      return open.apply(this, args);
+    };
+  })();
+
   // Requisição da lista principal
   useEffect(() => {
     axios.get(chartPlaylist).then((res) => {
@@ -67,12 +88,18 @@ const List = () => {
 
   // Requisição da lista de favoritos
   useEffect(() => {
-    axios.all(trackLinks.map((l) => axios.get(l))).then(
-      axios.spread(function (...res) {
-        // all requests are now complete
-        setFavoriteData(res);
-      })
-    );
+    axios
+      .all(
+        trackLinks.map((l) =>
+          axios.get(l, { headers: { "Access-Control-Allow-Origin": "*" } })
+        )
+      )
+      .then(
+        axios.spread(function (...res) {
+          // all requests are now complete
+          setFavoriteData(res);
+        })
+      );
     if (!showTrackList && trackLinks.length === 0) {
       setShowTrackList(true);
       setShowFavoriteList(false);
@@ -104,6 +131,7 @@ const List = () => {
     setShowFavoriteList(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handlePlayed = () => {
     if (!isPlayed) {
       setIsPlayed(true);
