@@ -39,6 +39,7 @@ const List = () => {
   let chartPlaylist = `https://api.deezer.com/playlist/1111141961?&index=0&limit=${valueList}`;
 
   //  handle CORS error using this snippet from https://github.com/Rob--W/cors-anywhere
+  // clique no link para liberar o cors na sua maquina -> https://cors-anywhere.herokuapp.com/
   (function () {
     var cors_api_host = "cors-anywhere.herokuapp.com";
     var cors_api_url = "https://" + cors_api_host + "/";
