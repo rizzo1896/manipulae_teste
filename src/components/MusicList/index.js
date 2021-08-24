@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, ListContainer, PlayerStyle, InfoBox } from "./style.jsx";
+import {
+  Container,
+  ListContainer,
+  PlayerStyle,
+  InfoBox,
+  LoadingScene,
+} from "./style.jsx";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
@@ -13,6 +19,7 @@ import MusicPlayer from "../MusicPlayer/index";
 const List = () => {
   const [isLoading, setLoading] = useState(true);
   const [valueList, setValueList] = useState(10);
+  const [searchList, setSearchList] = useState(10);
 
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -40,6 +47,8 @@ const List = () => {
 
   //  handle CORS error using this snippet from https://github.com/Rob--W/cors-anywhere
   // clique no link para liberar o cors na sua maquina -> https://cors-anywhere.herokuapp.com/
+  // Comente essa função caso queira rodar o codigo em localhost!!!
+  // INICIO
   (function () {
     var cors_api_host = "cors-anywhere.herokuapp.com";
     var cors_api_url = "https://" + cors_api_host + "/";
@@ -59,6 +68,7 @@ const List = () => {
       return open.apply(this, args);
     };
   })();
+  // FIM
 
   // Requisição da lista principal
   useEffect(() => {
@@ -82,25 +92,25 @@ const List = () => {
         ) {
           setValueList(valueList + 20);
         }
+        if (
+          window.innerHeight + document.documentElement.scrollTop ===
+          document.documentElement.offsetHeight
+        ) {
+          setSearchList(searchList + 20);
+        }
       };
     };
     activateInfiniteScroll();
-  }, [valueList]);
+  }, [valueList, searchList]);
 
   // Requisição da lista de favoritos
   useEffect(() => {
-    axios
-      .all(
-        trackLinks.map((l) =>
-          axios.get(l, { headers: { "Access-Control-Allow-Origin": "*" } })
-        )
-      )
-      .then(
-        axios.spread(function (...res) {
-          // all requests are now complete
-          setFavoriteData(res);
-        })
-      );
+    axios.all(trackLinks.map((l) => axios.get(l))).then(
+      axios.spread(function (...res) {
+        // all requests are now complete
+        setFavoriteData(res);
+      })
+    );
     if (!showTrackList && trackLinks.length === 0) {
       setShowTrackList(true);
       setShowFavoriteList(false);
@@ -195,7 +205,13 @@ const List = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <LoadingScene>
+          <span></span>
+        </LoadingScene>
+      </>
+    );
   }
 
   return (
@@ -279,7 +295,11 @@ const List = () => {
                           className="rank"
                           onClick={() => setMusicPlayed(item.preview)}
                         >
-                          {key + 1}
+                          {window.innerWidth <= 425 ? (
+                            <PlayCircleOutlineIcon />
+                          ) : (
+                            key + 1
+                          )}
                         </div>
                         <div className="favorite--icon">
                           <span value={item.id} onClick={(e) => handleFav(e)}>
@@ -341,7 +361,11 @@ const List = () => {
                           className="rank"
                           onClick={() => setMusicPlayed(item.data.preview)}
                         >
-                          {key + 1}
+                          {window.innerWidth <= 425 ? (
+                            <PlayCircleOutlineIcon />
+                          ) : (
+                            key + 1
+                          )}
                         </div>
                         <div className="favorite--icon">
                           <span
@@ -407,7 +431,11 @@ const List = () => {
                           className="rank"
                           onClick={() => setMusicPlayed(item.preview)}
                         >
-                          {key + 1}
+                          {window.innerWidth <= 425 ? (
+                            <PlayCircleOutlineIcon />
+                          ) : (
+                            key + 1
+                          )}
                         </div>
                         <div className="favorite--icon">
                           <span value={item.id} onClick={(e) => handleFav(e)}>

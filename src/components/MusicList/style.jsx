@@ -1,5 +1,37 @@
 import styled from "styled-components";
 
+export const LoadingScene = styled.div`
+  display: flex;
+  width: auto;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  span {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid #ccc;
+    border-bottom: 10px solid transparent;
+    animation: spin 0.9s linear infinite;
+    @-moz-keyframes spin {
+      100% {
+        -moz-transform: rotate(360deg);
+      }
+    }
+    @-webkit-keyframes spin {
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    @keyframes spin {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,6 +67,11 @@ export const Container = styled.div`
     }
     input:hover {
       box-shadow: 0px 0px 8px 0px #ccc;
+    }
+  }
+  @media (max-width: 425px) {
+    .search--box {
+      margin: 10px 10px;
     }
   }
 `;
@@ -87,6 +124,29 @@ export const InfoBox = styled.div`
       }
     }
   }
+
+  @media (max-width: 425px) {
+    max-width: 425px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    .content {
+      flex-direction: column;
+      img {
+        margin-bottom: 20px;
+        border-radius: 20px;
+      }
+      .Info--desc {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-left: 0;
+      }
+    }
+    .button--container {
+      margin-top: 30px;
+    }
+  }
 `;
 
 export const ListContainer = styled.div`
@@ -97,7 +157,7 @@ export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 900px;
+  /* min-width: 900px; */
   max-width: 1600px;
   margin: auto;
   margin-bottom: 55px;
@@ -183,6 +243,25 @@ export const ListContainer = styled.div`
     }
     .title--duration {
       width: 50px;
+    }
+    @media (max-width: 425px) {
+      width: 425px;
+      align-items: flex-start;
+      .title--music {
+        min-width: 295px;
+        max-width: 0px;
+      }
+      .title--artist {
+        display: none;
+      }
+      .title--album {
+        display: none;
+      }
+    }
+  }
+  .headerList {
+    @media (max-width: 450px) {
+      align-items: center;
     }
   }
 `;
