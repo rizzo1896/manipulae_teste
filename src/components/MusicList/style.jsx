@@ -1,6 +1,47 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin: auto;
+
+  .search--box {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    form {
+      width: 100%;
+    }
+    display: flex;
+    width: inherit;
+    position: relative;
+    svg {
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      height: 40px;
+      font-size: 22px;
+      padding-left: 33px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-shadow: 0px 0px 2px 0px #ccc;
+      outline: none;
+      /* margin: 0 10px; */
+      /* em tela pequena */
+    }
+    input:hover {
+      box-shadow: 0px 0px 8px 0px #ccc;
+    }
+  }
+`;
+
 export const InfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
   width: 900px;
   margin: 0 auto;
   margin-bottom: 80px;
@@ -24,6 +65,25 @@ export const InfoBox = styled.div`
           color: #ccc;
           font-size: 13px;
         }
+      }
+    }
+  }
+  .button--container {
+    display: flex;
+    div {
+      display: flex;
+      align-items: flex-end;
+      .buttons {
+        width: 150px;
+        height: 30px;
+        outline: none;
+        border: 1px solid #ddd;
+        background-color: #eee;
+        border-radius: 5px;
+        transition: all ease 0.1s;
+      }
+      .buttons:hover {
+        background-color: #ddd;
       }
     }
   }
