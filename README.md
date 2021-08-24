@@ -12,5 +12,5 @@
 
 - Sobre o design mobile apenas implementei o tamanho 425px de largura, pois não tive tempo suficiente.
 - Usando a ferramenta de desenvolvedor e colocando em 425px de largura você verá o estado mobile.
-- 
+
 - Caso queira rodar o app a partir do codigo, baixe a extensão do chrome "Allow CORS: Access-Control-Allow-Origin" neste link "https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf" e ative clicando no icone da extensão e apos isso clique em "toggle ON|OFF", tambem deverá comentar uma função na linha 50 do arquivo "index" da pasta "MusicList".
