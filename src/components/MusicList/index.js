@@ -9,12 +9,11 @@ import {
   InfoBox,
   LoadingScene,
 } from "./style.jsx";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import SearchIcon from "@material-ui/icons/Search";
 import MusicPlayer from "../MusicPlayer/index";
+import Track from "../Track/index.js";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
@@ -49,25 +48,25 @@ const List = () => {
   // clique no link para liberar o cors na sua maquina -> https://cors-anywhere.herokuapp.com/
   // Comente essa função caso queira rodar o codigo em localhost!!!
   // INICIO
-  (function () {
-    var cors_api_host = "cors-anywhere.herokuapp.com";
-    var cors_api_url = "https://" + cors_api_host + "/";
-    var slice = [].slice;
-    var origin = window.location.protocol + "//" + window.location.host;
-    var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function () {
-      var args = slice.call(arguments);
-      var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
-      if (
-        targetOrigin &&
-        targetOrigin[0].toLowerCase() !== origin &&
-        targetOrigin[1] !== cors_api_host
-      ) {
-        args[1] = cors_api_url + args[1];
-      }
-      return open.apply(this, args);
-    };
-  })();
+  // (function () {
+  //   var cors_api_host = "cors-anywhere.herokuapp.com";
+  //   var cors_api_url = "https://" + cors_api_host + "/";
+  //   var slice = [].slice;
+  //   var origin = window.location.protocol + "//" + window.location.host;
+  //   var open = XMLHttpRequest.prototype.open;
+  //   XMLHttpRequest.prototype.open = function () {
+  //     var args = slice.call(arguments);
+  //     var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+  //     if (
+  //       targetOrigin &&
+  //       targetOrigin[0].toLowerCase() !== origin &&
+  //       targetOrigin[1] !== cors_api_host
+  //     ) {
+  //       args[1] = cors_api_url + args[1];
+  //     }
+  //     return open.apply(this, args);
+  //   };
+  // })();
   // FIM
 
   // Requisição da lista principal
@@ -83,6 +82,22 @@ const List = () => {
   }, [chartPlaylist]);
 
   // Infinite scroll
+
+  // Requisição da lista de favoritos
+  useEffect(() => {
+    axios.all(trackLinks.map((l) => axios.get(l))).then(
+      axios.spread(function (...res) {
+        // all requests are now complete
+        setFavoriteData(res);
+      })
+    );
+    if (!showTrackList && trackLinks.length === 0) {
+      setShowTrackList(true);
+      setShowFavoriteList(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackLinks]);
+
   useEffect(() => {
     const activateInfiniteScroll = () => {
       window.onscroll = () => {
@@ -102,21 +117,6 @@ const List = () => {
     };
     activateInfiniteScroll();
   }, [valueList, searchList]);
-
-  // Requisição da lista de favoritos
-  useEffect(() => {
-    axios.all(trackLinks.map((l) => axios.get(l))).then(
-      axios.spread(function (...res) {
-        // all requests are now complete
-        setFavoriteData(res);
-      })
-    );
-    if (!showTrackList && trackLinks.length === 0) {
-      setShowTrackList(true);
-      setShowFavoriteList(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trackLinks]);
 
   // gerencia o campo de pesquisa
   const handleInput = (e) => {
@@ -269,205 +269,65 @@ const List = () => {
 
           <div className="bodyList">
             {showTrackList &&
-              trackList.map((item, key) => {
+              trackList.map((item, index) => {
                 let artist = item.title;
-                if (artist.length > 45) {
-                  artist = artist.substring(0, 45) + "...";
-                }
                 return (
-                  <>
-                    <div key={item.id}>
-                      <div
-                        onMouseEnter={handleIconSwap}
-                        onMouseLeave={(e) => {
-                          if (!isPlayed) {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              key + 1;
-                          } else {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              ReactDOMServer.renderToString(
-                                <PauseCircleOutlineIcon />
-                              );
-                          }
-                        }}
-                      >
-                        <div
-                          className="rank"
-                          onClick={() => setMusicPlayed(item.preview)}
-                        >
-                          {window.innerWidth <= 425 ? (
-                            <PlayCircleOutlineIcon />
-                          ) : (
-                            key + 1
-                          )}
-                        </div>
-                        <div className="favorite--icon">
-                          <span value={item.id} onClick={(e) => handleFav(e)}>
-                            {favoriteList.includes(item.id) ? (
-                              <FavoriteIcon style={{ color: "red" }} />
-                            ) : (
-                              <FavoriteBorderIcon fontSize={"inherit"} />
-                            )}
-                          </span>
-                        </div>
-                        <div className="title--music">
-                          <a target="_blank" rel="noreferrer" href={item.link}>
-                            {artist}
-                          </a>
-                        </div>
-                        <div className="title--artist">{item.artist.name}</div>
-                        <div className="title--album">{item.album.title}</div>
-                        <div className="title--duration">
-                          {item.duration / 60 < 10
-                            ? "0" +
-                              (item.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")
-                            : (item.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")}
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <div key={index}>
+                    <Track
+                      data={{
+                        favoriteList,
+                        item,
+                        isPlayed,
+                        index,
+                        setMusicPlayed,
+                        handleFav,
+                        handleIconSwap,
+                        artist,
+                      }}
+                    />
+                  </div>
                 );
               })}
             {showFavoriteList &&
-              favoriteData.map((item, key) => {
+              favoriteData.map((item, index) => {
                 let artist = item.data.title;
-                if (artist.length > 45) {
-                  artist = artist.substring(0, 45) + "...";
-                }
+                item = item.data;
                 return (
-                  <>
-                    <div key={item.data.id}>
-                      <div
-                        onMouseEnter={handleIconSwap}
-                        onMouseLeave={(e) => {
-                          if (!isPlayed) {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              key + 1;
-                          } else {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              ReactDOMServer.renderToString(
-                                <PauseCircleOutlineIcon />
-                              );
-                          }
-                        }}
-                      >
-                        <div
-                          className="rank"
-                          onClick={() => setMusicPlayed(item.data.preview)}
-                        >
-                          {window.innerWidth <= 425 ? (
-                            <PlayCircleOutlineIcon />
-                          ) : (
-                            key + 1
-                          )}
-                        </div>
-                        <div className="favorite--icon">
-                          <span
-                            value={item.data.id}
-                            onClick={(e) => handleFav(e)}
-                          >
-                            <FavoriteIcon style={{ color: "red" }} />
-                          </span>
-                        </div>
-                        <div className="title--music">
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={item.data.link}
-                          >
-                            {artist}
-                          </a>
-                        </div>
-                        <div className="title--artist">
-                          {item.data.artist.name}
-                        </div>
-                        <div className="title--album">
-                          {item.data.album.title}
-                        </div>
-                        <div className="title--duration">
-                          {item.data.duration / 60 < 10
-                            ? "0" +
-                              (item.data.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")
-                            : (item.data.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")}
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <div key={index}>
+                    <Track
+                      data={{
+                        favoriteList,
+                        item,
+                        isPlayed,
+                        index,
+                        setMusicPlayed,
+                        handleFav,
+                        handleIconSwap,
+                        artist,
+                      }}
+                    />
+                  </div>
                 );
               })}
 
             {toggleSearch &&
-              searchResults.map((item, key) => {
+              searchResults.map((item, index) => {
+                let artist = item.title;
                 return (
-                  <>
-                    <div key={item.id}>
-                      <div
-                        onMouseEnter={handleIconSwap}
-                        onMouseLeave={(e) => {
-                          if (!isPlayed) {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              key + 1;
-                          } else {
-                            e.currentTarget.firstElementChild.innerHTML =
-                              ReactDOMServer.renderToString(
-                                <PauseCircleOutlineIcon />
-                              );
-                          }
-                        }}
-                      >
-                        <div
-                          className="rank"
-                          onClick={() => setMusicPlayed(item.preview)}
-                        >
-                          {window.innerWidth <= 425 ? (
-                            <PlayCircleOutlineIcon />
-                          ) : (
-                            key + 1
-                          )}
-                        </div>
-                        <div className="favorite--icon">
-                          <span value={item.id} onClick={(e) => handleFav(e)}>
-                            {favoriteList.includes(item.id) ? (
-                              <FavoriteIcon style={{ color: "red" }} />
-                            ) : (
-                              <FavoriteBorderIcon fontSize={"inherit"} />
-                            )}
-                          </span>
-                        </div>
-                        <div className="title--music">
-                          <a target="_blank" rel="noreferrer" href={item.link}>
-                            {item.title}
-                          </a>
-                        </div>
-                        <div className="title--artist">{item.artist.name}</div>
-                        <div className="title--album">{item.album.title}</div>
-                        <div className="title--duration">
-                          {item.duration / 60 < 10
-                            ? "0" +
-                              (item.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")
-                            : (item.duration / 60)
-                                .toFixed(2)
-                                .toString()
-                                .replace(".", ":")}
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <div key={index}>
+                    <Track
+                      data={{
+                        favoriteList,
+                        item,
+                        isPlayed,
+                        index,
+                        setMusicPlayed,
+                        handleFav,
+                        handleIconSwap,
+                        artist,
+                      }}
+                    />
+                  </div>
                 );
               })}
           </div>
