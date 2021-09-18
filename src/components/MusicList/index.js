@@ -43,31 +43,31 @@ const List = () => {
     (state) => state.FavoriteListReducer.trackLinks
   );
   const dispatch = useDispatch();
-  let chartPlaylist = `https://api.deezer.com/playlist/1111141961?&index=0&limit=${valueList}`;
+  let chartPlaylist = `https://my-projets-rizzo.herokuapp.com/api/${valueList}`;
 
   //  handle CORS error using this snippet from https://github.com/Rob--W/cors-anywhere
   // clique no link para liberar o cors na sua maquina -> https://cors-anywhere.herokuapp.com/
   // Comente essa função caso queira rodar o codigo em localhost!!!
   // INICIO
-  (function () {
-    var cors_api_host = "cors-anywhere.herokuapp.com";
-    var cors_api_url = "https://" + cors_api_host + "/";
-    var slice = [].slice;
-    var origin = window.location.protocol + "//" + window.location.host;
-    var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function () {
-      var args = slice.call(arguments);
-      var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
-      if (
-        targetOrigin &&
-        targetOrigin[0].toLowerCase() !== origin &&
-        targetOrigin[1] !== cors_api_host
-      ) {
-        args[1] = cors_api_url + args[1];
-      }
-      return open.apply(this, args);
-    };
-  })();
+  // (function () {
+  //   var cors_api_host = "cors-anywhere.herokuapp.com";
+  //   var cors_api_url = "https://" + cors_api_host + "/";
+  //   var slice = [].slice;
+  //   var origin = window.location.protocol + "//" + window.location.host;
+  //   var open = XMLHttpRequest.prototype.open;
+  //   XMLHttpRequest.prototype.open = function () {
+  //     var args = slice.call(arguments);
+  //     var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+  //     if (
+  //       targetOrigin &&
+  //       targetOrigin[0].toLowerCase() !== origin &&
+  //       targetOrigin[1] !== cors_api_host
+  //     ) {
+  //       args[1] = cors_api_url + args[1];
+  //     }
+  //     return open.apply(this, args);
+  //   };
+  // })();
   // FIM
 
   // Requisição da lista principal
